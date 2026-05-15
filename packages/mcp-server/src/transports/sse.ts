@@ -21,9 +21,9 @@ interface SseServerOptions {
   host?: string;
   /** Auth token for remote mode. If set, requires Authorization: Bearer <token> */
   authToken?: string;
-  /** TLS certificate path (for HTTPS) */
+  /** TLS certificate path for HTTPS */
   tlsCert?: string;
-  /** TLS key path (for HTTPS) */
+  /** TLS key path for HTTPS */
   tlsKey?: string;
   /** Allow starting without auth token (unsafe). Default: false */
   allowUnsafe?: boolean;
@@ -39,6 +39,7 @@ export function startSseServer(
 ) {
   const port = options.port ?? 9422;
   const host = options.host ?? "127.0.0.1";
+  const startTime = Date.now();
 
   // Active SSE connections keyed by session ID
   const sessions = new Map<string, SseSession>();
@@ -148,7 +149,6 @@ export function startSseServer(
         });
 
         // Cleanup on disconnect — use stream's cancel() callback (already handled above)
-        // Bun's Request.signal is an AbortSignal, use standard API
         if (req.signal) {
           req.signal.addEventListener("abort", () => {
             sessions.delete(sessionId);
@@ -227,20 +227,27 @@ export function startSseServer(
         });
       }
 
-      // ── GET / — health check ────────────────────────────
-      if (req.method === "GET" && url.pathname === "/") {
+      // ── GET /health — Health Check ──────────────────────
+      if (req.method === "GET" && url.pathname === "/health") {
+        const uptime = Math.floor((Date.now() - startTime) / 1000);
+        
+        let memoryCount = "unknown";
+        try {
+           const srv = server as any;
+           if (srv.ctx && srv.ctx.db) {
+              const stats = await srv.ctx.db.getStats();
+              memoryCount = stats.memories;
+           }
+        } catch (e) {
+           memoryCount = "error";
+        }
+
         return new Response(
           JSON.stringify({
-            server: "the-brain MCP",
-            version: "0.2.0",
-            transport: "sse",
-            endpoints: {
-              sse: `http://${host}:${port}/sse`,
-              message: `http://${host}:${port}/message?sessionId=<id>`,
-            },
-            sessions: sessions.size,
-            auth: options.authToken ? "configured" : "none (unsafe mode)",
-            unsafeAllowed: options.allowUnsafe === true,
+            status: "ok",
+            uptime,
+            memoryCount,
+            version: server.serverInfo.version,
           }),
           {
             headers: {
