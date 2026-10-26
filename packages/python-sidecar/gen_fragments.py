@@ -43,7 +43,7 @@ fragments = [
         "metadata": {"source": "claude", "layer": "instant", "type": "correction", "weight": 0.9}
     },
     {
-        "text": "All code, comments, and documentation in English. Only user-facing CLI messages in Polish. Commit messages follow conventional commits: feat, fix, chore, docs, refactor, test.",
+        "text": "All code, comments, documentation, and user-facing CLI messages in English. Commit messages follow conventional commits: feat, fix, chore, docs, refactor, test.",
         "metadata": {"source": "claude", "layer": "deep", "type": "preference", "weight": 0.8}
     },
     {
@@ -51,7 +51,7 @@ fragments = [
         "metadata": {"source": "claude", "layer": "instant", "type": "correction", "weight": 1.0}
     },
     {
-        "text": "Communication with the user in Polish. Keep answers short and concise. No emojis in commits, issues, PR comments, or code (except README branding). Technical prose only.",
+        "text": "Communication with the user in English. Keep answers short and concise. No emojis in commits, issues, PR comments, or code (except README branding). Technical prose only.",
         "metadata": {"source": "claude", "layer": "deep", "type": "preference", "weight": 0.8}
     },
     {

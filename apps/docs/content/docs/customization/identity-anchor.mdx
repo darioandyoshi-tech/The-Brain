@@ -13,7 +13,7 @@ Without an anchor, repeated LoRA training can cause catastrophic forgetting — 
 
 1. **Capture**: Watches `SELECTION_PROMOTE` for short, high-surprise declarative statements
    - Language-agnostic structural detection: 20-200 char fragments with surpriseScore ≥ threshold
-   - No English keywords needed — works for Polish, Japanese, Chinese, any language
+   - No English keywords needed — works for Japanese, Chinese, German, any language
 2. **Vectorize**: Builds a self-vector from fragments with embeddings (requires ≥3 for stability)
 3. **Detect Drift**: Before each training run, computes cosine similarity between current and baseline
 4. **Boost**: If drift exceeds threshold, repeats anchor fragments N times in training data
