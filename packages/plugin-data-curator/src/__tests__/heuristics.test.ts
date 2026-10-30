@@ -59,8 +59,8 @@ describe("evaluateHeuristics", () => {
   });
 
   test("rejects system prompt annotations", () => {
-    const prompt = "[System note: language set to Polish]";
-    const response = "Rozumiem";
+    const prompt = "[System note: language set to English]";
+    const response = "Understood";
     const result = evaluateHeuristics(prompt, response);
     expect(result.passed).toBe(false);
     expect(result.rejectReason).toContain("system bracket");

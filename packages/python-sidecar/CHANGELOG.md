@@ -11,6 +11,7 @@
 
 ### Changed
 
+- Training data generators (`gen_fragments.py`, `generate_lora_data.py`): language preference fragments now state English for user communication and CLI messages instead of Polish.
 - Default training model: `SmolLM2-135M-Instruct` → `gemma-4-e4b-it-4bit` (4B params, 5.22 GB).
 - Training hyperparams: batch_size 2→4, max_seq_length 512→1024, iterations 50→200.
 - Requires `mlx-vlm` as a dependency for Gemma 4 quantized model loading.

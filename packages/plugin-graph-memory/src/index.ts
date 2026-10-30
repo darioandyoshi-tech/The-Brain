@@ -191,7 +191,7 @@ interface RecentInteraction {
 
 /**
  * Unicode-aware tokenizer — splits on non-letter characters (works for
- * all languages: Polish, Chinese, Japanese, Arabic, etc.)
+ * all languages: accented Latin, Chinese, Japanese, Arabic, etc.)
  */
 function tokenize(text: string): string[] {
   const tokens: string[] = [];

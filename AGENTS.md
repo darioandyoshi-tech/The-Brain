@@ -10,7 +10,7 @@ automatically read and follow these rules when opened from the the-brain root di
 - No emojis in commits, issues, PR comments, or code (except README branding)
 - No fluff or cheerful filler text
 - Technical prose only, be kind but direct (e.g., "Thanks @user" not "Thanks so much @user!")
-- Communication with the user in Polish; all code, comments, docs, and changelogs in English
+- Communication with the user in English; all code, comments, docs, and changelogs in English
 
 ## Project Philosophy
 

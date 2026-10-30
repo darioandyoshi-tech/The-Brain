@@ -26,7 +26,7 @@ if (!existsSync(EVOLUTION_DIR)) {
 // ── Schema ─────────────────────────────────────────────────────────────────────
 
 const SCHEMA = `
--- Cycles: każdy cykl = jedna propozycja + implementacja + ewaluacja
+-- Cycles: each cycle = one proposal + implementation + evaluation
 CREATE TABLE IF NOT EXISTS cycles (
   id              INTEGER PRIMARY KEY AUTOINCREMENT,
   cycle_number    INTEGER NOT NULL,
@@ -35,28 +35,28 @@ CREATE TABLE IF NOT EXISTS cycles (
                     'deep-refactor','self-evolve'
                   )),
   
-  -- Propozycja
+  -- Proposal
   branch_name     TEXT NOT NULL,
   commit_sha      TEXT NOT NULL DEFAULT '',
   prediction      TEXT NOT NULL,
   predicted_fixes TEXT,
   predicted_regressions TEXT,
   
-  -- Ewaluacja obowiązkowa
+  -- Mandatory evaluation
   tests_total     INTEGER,
   tests_passed    INTEGER,
   tests_failed    INTEGER,
   build_success   INTEGER NOT NULL DEFAULT 0,
   build_time_ms   INTEGER,
   
-  -- Ewaluacja miękka
+  -- Soft evaluation
   coverage_before REAL,
   coverage_after  REAL,
   lint_errors     INTEGER,
   lint_warnings   INTEGER,
   lint_delta      INTEGER DEFAULT 0,
   
-  -- Brain benchmarki (opcjonalne)
+  -- Brain benchmarks (optional)
   brain_spm_accuracy    REAL,
   brain_graph_precision REAL,
   brain_graph_recall    REAL,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS cycles (
   brain_consolidation_rate REAL,
   brain_lora_time_ms    INTEGER,
   
-  -- Werdykt
+  -- Verdict
   verdict         TEXT NOT NULL DEFAULT 'pending' CHECK(verdict IN (
                     'pending','confirmed','rejected',
                     'confirmed_with_regression','regression_blindness'
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS cycles (
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Batche: grupy 5 cykli zbierane do HITL review
+-- Batches: groups of 5 cycles collected for HITL review
 CREATE TABLE IF NOT EXISTS batches (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
   status        TEXT NOT NULL DEFAULT 'open' CHECK(status IN (
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS batches (
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Wzorce z graph memory (gdy już ich używamy)
+-- Patterns from graph memory (once we use them)
 CREATE TABLE IF NOT EXISTS evolution_patterns (
   id              INTEGER PRIMARY KEY AUTOINCREMENT,
   pattern         TEXT NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS evolution_patterns (
   discovered_at   TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Historia feedbacku od człowieka — żeby agent się uczył
+-- Human feedback history — so the agent learns
 CREATE TABLE IF NOT EXISTS feedback_history (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
   cycle_id      INTEGER REFERENCES cycles(id),
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS feedback_history (
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Indeksy
+-- Indexes
 CREATE INDEX IF NOT EXISTS idx_cycles_mode     ON cycles(mode);
 CREATE INDEX IF NOT EXISTS idx_cycles_verdict  ON cycles(verdict);
 CREATE INDEX IF NOT EXISTS idx_cycles_batch    ON cycles(batch_id);
